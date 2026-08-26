@@ -1,0 +1,253 @@
+/* ============================================================
+   15 ANIMACIONES Y EFECTOS
+   Archivo dedicado — mantiene todo lo nuevo en un solo lugar en vez de
+   disperso en los archivos existentes, más fácil de auditar como
+   conjunto. Cada bloque está numerado según la lista original.
+   ============================================================ */
+
+/* ---------- #1 Skeleton loading ---------- */
+.skeleton-card { pointer-events: none; }
+.skeleton-block {
+  background: linear-gradient(
+    100deg,
+    var(--c-surface-2) 30%,
+    var(--c-border) 50%,
+    var(--c-surface-2) 70%
+  );
+  background-size: 200% 100%;
+  animation: skeletonShimmer 1.6s ease-in-out infinite;
+  border-radius: 4px;
+}
+@keyframes skeletonShimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+.skeleton-card__banner {
+  width: calc(100% + 3rem);
+  margin: -1.5rem -1.5rem 1.1rem;
+  aspect-ratio: 2 / 1;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+.skeleton-card__top { display: flex; justify-content: space-between; margin-bottom: 0.9rem; }
+.skeleton-card__tag { width: 64px; height: 20px; }
+.skeleton-card__rating { width: 40px; height: 16px; }
+.skeleton-card__title { width: 70%; height: 18px; margin-bottom: 0.6rem; }
+.skeleton-card__desc { width: 100%; height: 12px; margin-bottom: 0.5rem; }
+.skeleton-card__desc--short { width: 55%; }
+.skeleton-card__footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: 1rem; }
+.skeleton-card__price { width: 60px; height: 22px; }
+.skeleton-card__btn { width: 90px; height: 32px; border-radius: var(--radius-sm); }
+
+/* ---------- #3 Ripple ---------- */
+.ripple-host,
+.glowbtn,
+.infobtn {
+  position: relative;
+  overflow: hidden;
+}
+/* Capa dedicada para el ripple dentro de botones cuyo contenido interno
+   cambia dinámicamente (como "Añadir al carrito" con su loading state).
+   position:absolute + inset:0 hace que coincida exactamente con el área
+   del botón, así getBoundingClientRect() en Ripple.jsx da las mismas
+   coordenadas que si apuntara al botón directamente. Ver ProductCard.jsx
+   para la explicación completa de por qué existe esta capa. */
+.btn__ripplelayer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  border-radius: inherit;
+}
+.btn__content {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+  transform: scale(0);
+  animation: rippleExpand 0.6s ease-out;
+  pointer-events: none;
+}
+@keyframes rippleExpand {
+  to {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+.btn--outline .ripple,
+.btn--ghost .ripple,
+.btn--text .ripple,
+.infobtn .ripple {
+  background: rgba(var(--c-accent-rgb), 0.25);
+}
+
+/* ---------- #4 Shake en error de formulario ---------- */
+.form.is-shaking {
+  animation: formShake 0.4s ease-in-out;
+}
+@keyframes formShake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(7px); }
+  60% { transform: translateX(-5px); }
+  80% { transform: translateX(3px); }
+}
+.field:has(input:invalid) input {
+  animation: fieldFlash 0.4s ease-in-out;
+}
+@keyframes fieldFlash {
+  0%, 100% { border-color: var(--c-border); }
+  30% { border-color: #e8555f; }
+}
+
+/* ---------- #8 Progress bar de scroll ---------- */
+.scrollbar-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--c-accent-bright), var(--c-accent-deep));
+  transform-origin: left;
+  transform: scaleX(0);
+}
+
+/* ---------- #9 Bounce del carrito ---------- */
+.iconbtn.is-bouncing {
+  animation: cartBounce 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes cartBounce {
+  0%, 100% { transform: scale(1); }
+  30% { transform: scale(1.25); }
+  50% { transform: scale(0.95); }
+  70% { transform: scale(1.1); }
+}
+.iconbtn.is-bouncing .badge {
+  animation: badgePop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes badgePop {
+  0% { transform: scale(0); }
+  60% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+
+/* ---------- #12 Toast ---------- */
+.toast-host {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 300;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  pointer-events: none;
+}
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  background: var(--c-surface-2);
+  border: 1px solid var(--c-border);
+  color: var(--c-text);
+  font-size: 0.83rem;
+  font-weight: 500;
+  padding: 0.7rem 1rem;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-card);
+  animation: toastIn 0.3s var(--ease), toastOut 0.3s var(--ease) 1.9s forwards;
+}
+.toast svg { color: var(--c-accent-bright); flex-shrink: 0; }
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(8px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes toastOut {
+  to { opacity: 0; transform: translateY(4px) scale(0.98); }
+}
+
+/* ---------- #13 Morph hamburguesa a X ---------- */
+.menutoggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: var(--radius-sm);
+}
+.menutoggle__bar {
+  width: 18px;
+  height: 2px;
+  background: var(--c-text);
+  border-radius: 1px;
+  transition: transform 0.3s var(--ease), opacity 0.2s var(--ease);
+}
+.menutoggle.is-open .menutoggle__bar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.menutoggle.is-open .menutoggle__bar:nth-child(2) {
+  opacity: 0;
+}
+.menutoggle.is-open .menutoggle__bar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ---------- #14 Highlight de búsqueda ---------- */
+.search-highlight {
+  background: rgba(var(--c-accent-rgb), 0.28);
+  color: var(--c-text);
+  border-radius: 3px;
+  padding: 0 1px;
+}
+
+/* ---------- #15 Flash del eyebrow al navegar ---------- */
+.section__eyebrow.is-flashing {
+  animation: eyebrowFlash 0.9s ease-out;
+}
+@keyframes eyebrowFlash {
+  0%, 100% { color: var(--c-accent-bright); }
+  15%, 45% { color: var(--c-text); text-shadow: 0 0 12px rgba(var(--c-accent-rgb), 0.6); }
+}
+
+/* ---------- #10 Cursor de tecleo (typing effect) ---------- */
+.terminal__typecursor {
+  display: inline-block;
+  width: 6px;
+  height: 13px;
+  background: var(--c-accent-bright);
+  margin-left: 2px;
+  animation: blink 0.9s step-end infinite;
+  vertical-align: middle;
+}
+
+/* ---------- #11 Parallax del banner ---------- */
+.pbanner__svg {
+  transition: transform 0.05s linear;
+  will-change: transform;
+}
+
+/* Respeta reduced-motion globalmente para todo lo de este archivo */
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-block,
+  .ripple,
+  .form.is-shaking,
+  .field:has(input:invalid) input,
+  .iconbtn.is-bouncing,
+  .iconbtn.is-bouncing .badge,
+  .toast,
+  .section__eyebrow.is-flashing,
+  .terminal__typecursor {
+    animation: none !important;
+  }
+  .menutoggle__bar {
+    transition: none !important;
+  }
+}

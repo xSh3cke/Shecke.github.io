@@ -1,0 +1,264 @@
+/* Grid de productos, cards (destacada + catálogo unificadas en una sola
+   clase con modificador), banner visual, etiquetas dinámicas (badge-pill)
+   e indicador de instalaciones con pulso al incrementar. */
+
+/* ============================================================
+   CARDS / GRID
+   ============================================================ */
+.grid { display: grid; gap: 1.25rem; }
+.grid--featured { grid-template-columns: repeat(3, 1fr); }
+.grid--catalog { grid-template-columns: repeat(3, 1fr); }
+
+.card {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s var(--ease), border-color 0.25s var(--ease), box-shadow 0.25s var(--ease);
+  animation: cardIn 0.5s var(--ease) both;
+  animation-delay: var(--delay, 0ms);
+  position: relative;
+}
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(var(--c-accent-rgb), 0.4);
+  box-shadow: var(--shadow-card);
+}
+.card--featured {
+  background: linear-gradient(165deg, var(--c-surface) 0%, var(--c-bg-raise) 100%);
+  position: relative;
+}
+.card--featured::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(165deg, rgba(var(--c-accent-rgb), 0.35), transparent 40%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.card__top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.9rem; }
+.tag {
+  font-family: var(--f-mono);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: #fff;
+  background: linear-gradient(135deg, var(--c-accent-bright), var(--c-accent-deep));
+  padding: 0.28rem 0.6rem;
+  border-radius: 5px;
+}
+.tag--outline {
+  background: transparent;
+  border: 1px solid var(--c-border);
+  color: var(--c-text-faint);
+}
+.rating { display: flex; align-items: center; gap: 0.3rem; font-size: 0.78rem; color: var(--c-text-dim); font-family: var(--f-mono); }
+.rating__icon { color: #f0b429; }
+
+.card__topactions { display: flex; align-items: center; gap: 0.65rem; }
+.infobtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  color: var(--c-text-faint);
+  border: 1px solid var(--c-border);
+  transition: color 0.2s, border-color 0.2s, transform 0.2s var(--ease), background 0.2s;
+  flex-shrink: 0;
+}
+.infobtn:hover {
+  color: var(--c-accent-bright);
+  border-color: var(--c-accent);
+  background: var(--c-accent-wash);
+  transform: scale(1.08);
+}
+.infobtn:active { transform: scale(0.96); }
+
+.card__title { font-family: var(--f-display); font-size: var(--fs-h3); font-weight: 600; margin-bottom: 0.55rem; letter-spacing: -0.01em; }
+.card__title--sm { font-size: 1rem; }
+
+.card__desc { font-size: 0.85rem; color: var(--c-text-dim); line-height: 1.55; margin-bottom: 1rem; }
+.card__desc--clamp { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+.card__specs { display: flex; flex-direction: column; gap: 0.45rem; margin-bottom: 1.3rem; flex: 1; }
+.card__specs li { display: flex; align-items: center; gap: 0.5rem; font-size: 0.79rem; color: var(--c-text-dim); }
+.card__specs svg { color: var(--c-success); flex-shrink: 0; }
+
+.card__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  padding-top: 1rem;
+  margin-top: auto;
+  border-top: 1px solid var(--c-border-soft);
+}
+.card__price { display: flex; flex-direction: column; }
+.card__amount { font-family: var(--f-display); font-weight: 700; font-size: 1.2rem; color: var(--c-text); }
+.card__amount--sm { font-size: 1.05rem; }
+
+/* ============================================================
+   INSTALACIONES ANIMADAS
+   El número sube solo (ver useLiveInstalls.js — es una simulación
+   local, no data real de un backend). .is-pulsing se aplica por 600ms
+   cada vez que el contador sube, vía JS, para dar una señal visual
+   discreta del incremento sin que el usuario tenga que fijarse en el
+   número exacto.
+   ============================================================ */
+.card__installs {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.68rem;
+  color: var(--c-text-faint);
+  font-family: var(--f-mono);
+}
+.card__installsicon { color: var(--c-success); opacity: 0.7; flex-shrink: 0; }
+.card__installs.is-pulsing { color: var(--c-success); }
+.card__installs.is-pulsing .card__installsicon {
+  opacity: 1;
+  animation: installPulse 0.6s var(--ease);
+}
+@keyframes installPulse {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.5); }
+  100% { transform: scale(1); }
+}
+
+/* ============================================================
+   BANNER VISUAL DE PRODUCTO
+   Gradiente SVG generado por producto (ver ProductBanner.jsx) en vez
+   de un placeholder de imagen gris. El ícono de categoría flota encima
+   como un sello.
+   ============================================================ */
+.pbanner {
+  position: relative;
+  width: calc(100% + 3rem);
+  margin: -1.5rem -1.5rem 1.1rem;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  overflow: hidden;
+  aspect-ratio: 2 / 1;
+}
+.pbanner--lg { aspect-ratio: 2.1 / 1; }
+.pbanner__svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.pbanner__seal {
+  position: absolute;
+  bottom: 0.75rem;
+  right: 0.85rem;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: rgba(5, 5, 6, 0.55);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--c-accent-bright);
+}
+
+/* ============================================================
+   ETIQUETAS DINÁMICAS (badge-pill)
+   Una clase de color por tipo de etiqueta — deliberadamente NO todas
+   usan --c-accent, porque si "new", "vip", "free" y "offer" fueran
+   todas del mismo color de marca, dejarían de leerse como categorías
+   distintas de un vistazo. --c-accent se reserva para "exclusive" y
+   "vip", que sí quieren asociarse directamente con la marca.
+   ============================================================ */
+.card__badges {
+  position: absolute;
+  top: 0.9rem;
+  left: 0.9rem;
+  z-index: 2;
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+.badge-pill {
+  font-family: var(--f-mono);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 0.24rem 0.5rem;
+  border-radius: 4px;
+  color: #fff;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+.badge-pill--new { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+.badge-pill--vip { background: linear-gradient(135deg, var(--c-accent-bright), var(--c-accent-deep)); }
+.badge-pill--free { background: linear-gradient(135deg, #22c55e, #15803d); }
+.badge-pill--exclusive { background: linear-gradient(135deg, #a855f7, #6d28d9); }
+.badge-pill--paid { background: linear-gradient(135deg, #64748b, #334155); }
+.badge-pill--fix { background: linear-gradient(135deg, #f59e0b, #b45309); }
+.badge-pill--update { background: linear-gradient(135deg, #06b6d4, #0e7490); }
+.badge-pill--offer { background: linear-gradient(135deg, #ef4444, #b91c1c); }
+
+/* ============================================================
+   BOTÓN CON ESTADO DE CARGA
+   .btn--loadable solo fija un min-width para que el botón no cambie
+   de ancho al pasar de texto a spinner (evita el "salto" de layout).
+   ============================================================ */
+.btn--loadable { min-width: 108px; }
+.spin { animation: spin 0.7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ============================================================
+   CARRUSEL DESPLEGABLE DE DESTACADOS
+   Solo aparece si hay más de 3 productos featured (ver
+   FeaturedCarousel.jsx). El panel usa grid-template-rows 0fr→1fr en vez
+   de max-height para una transición de altura realmente fluida sin
+   necesidad de conocer la altura final del contenido de antemano.
+   ============================================================ */
+.featured-carousel__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.5s var(--ease);
+}
+.featured-carousel__panel.is-expanded {
+  grid-template-rows: 1fr;
+}
+.featured-carousel__extra {
+  overflow: hidden;
+  min-height: 0;
+  margin-top: 1.25rem;
+}
+
+.featured-carousel__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  margin-top: 1.5rem;
+  padding: 0.85rem;
+  border: 1px dashed var(--c-border);
+  border-radius: var(--radius-sm);
+  color: var(--c-text-dim);
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+.featured-carousel__toggle:hover {
+  border-color: var(--c-accent);
+  border-style: solid;
+  color: var(--c-text);
+  background: var(--c-accent-wash);
+}
+.featured-carousel__toggle svg {
+  transition: transform 0.3s var(--ease);
+}
+.featured-carousel__toggle svg.is-flipped {
+  transform: rotate(180deg);
+}

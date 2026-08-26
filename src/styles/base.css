@@ -1,0 +1,58 @@
+/* Reset global, accesibilidad (focus visible, reduced-motion) y helpers.
+   No depende de tokens.css en contenido, pero SÍ en orden de import —
+   ver index.css: tokens.css se importa primero. */
+
+/* ============================================================
+   RESET
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  background: var(--c-bg);
+  color: var(--c-text);
+  font-family: var(--f-body);
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+img, svg { display: block; max-width: 100%; }
+button, input { font: inherit; color: inherit; }
+button { cursor: pointer; background: none; border: none; }
+a { color: inherit; text-decoration: none; }
+ul { list-style: none; }
+
+/* Respect reduced motion globally */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Visible keyboard focus everywhere */
+:focus-visible {
+  outline: 2px solid var(--c-accent-bright);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Fluid media queries used throughout:
+   ≤480  → phones
+   ≤768  → phones landscape / small tablets
+   ≤1024 → tablets / iPad portrait
+   ≤1200 → small laptops
+   1440+ → desktop (default)
+*/
+
+.app { min-height: 100vh; display: flex; flex-direction: column; }

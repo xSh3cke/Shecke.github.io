@@ -1,0 +1,113 @@
+/* ============================================================
+   DESIGN TOKENS
+   Color tokens are split by [data-theme] so ThemeContext can swap
+   the whole palette by setting one attribute on <html> — no React
+   re-render needed, the browser resolves it via CSS cascade.
+   Non-color tokens (type, spacing, shadows' shape) stay in :root
+   because they don't change between themes.
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  /* Type */
+  --f-display: 'Space Grotesk', 'Inter', sans-serif;
+  --f-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --f-mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+
+  /* Fluid type scale — clamps handle all breakpoints without extra media queries */
+  --fs-hero: clamp(2.25rem, 4.4vw + 1rem, 4.25rem);
+  --fs-h2: clamp(1.65rem, 2.2vw + 1rem, 2.5rem);
+  --fs-h3: clamp(1.05rem, 0.6vw + 0.9rem, 1.25rem);
+  --fs-body-lg: clamp(1rem, 0.4vw + 0.9rem, 1.15rem);
+  --fs-body: 0.95rem;
+  --fs-sm: 0.83rem;
+  --fs-xs: 0.72rem;
+
+  /* Space */
+  --sp-section: clamp(3.5rem, 7vw, 7.5rem);
+  --sp-container: clamp(1.25rem, 5vw, 3rem);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---------- Tema: Carmesí (por defecto) ---------- */
+:root,
+[data-theme='crimson'] {
+  --c-bg: #050506;
+  --c-bg-raise: #0c0c0e;
+  --c-surface: #111114;
+  --c-surface-2: #17171b;
+  --c-border: #232327;
+  --c-border-soft: #1a1a1e;
+
+  --c-accent: #c41e3a;
+  --c-accent-deep: #7a0f22;
+  --c-accent-bright: #e8324a;
+  --c-accent-wash: rgba(196, 30, 58, 0.12);
+  --c-accent-rgb: 196, 30, 58;
+
+  --c-text: #ecebe8;
+  --c-text-dim: #a3a2a0;
+  --c-text-faint: #66656a;
+
+  --c-success: #35c76e;
+  --c-warn: #e0a030;
+
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 32px -12px rgba(0, 0, 0, 0.55);
+  --shadow-accent: 0 8px 30px -8px rgba(196, 30, 58, 0.45);
+}
+
+/* ---------- Tema: Medianoche (azul/índigo frío) ---------- */
+[data-theme='midnight'] {
+  --c-bg: #05060a;
+  --c-bg-raise: #0a0d16;
+  --c-surface: #10131e;
+  --c-surface-2: #161a28;
+  --c-border: #232a3d;
+  --c-border-soft: #1a2030;
+
+  --c-accent: #3454d1;
+  --c-accent-deep: #1c2f7a;
+  --c-accent-bright: #5b7ce8;
+  --c-accent-wash: rgba(52, 84, 209, 0.14);
+  --c-accent-rgb: 52, 84, 209;
+
+  --c-text: #e9ebf3;
+  --c-text-dim: #a1a6ba;
+  --c-text-faint: #63687d;
+
+  --c-success: #35c76e;
+  --c-warn: #e0a030;
+
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 32px -12px rgba(0, 0, 0, 0.55);
+  --shadow-accent: 0 8px 30px -8px rgba(52, 84, 209, 0.5);
+}
+
+/* ---------- Tema: Esmeralda (verde oscuro) ---------- */
+[data-theme='emerald'] {
+  --c-bg: #050a07;
+  --c-bg-raise: #0a120d;
+  --c-surface: #101a14;
+  --c-surface-2: #16221a;
+  --c-border: #23332a;
+  --c-border-soft: #1a2620;
+
+  --c-accent: #1e9e5a;
+  --c-accent-deep: #0f5c34;
+  --c-accent-bright: #2ec777;
+  --c-accent-wash: rgba(30, 158, 90, 0.14);
+  --c-accent-rgb: 30, 158, 90;
+
+  --c-text: #e9f3ec;
+  --c-text-dim: #a1baa9;
+  --c-text-faint: #637d6b;
+
+  --c-success: #35c76e;
+  --c-warn: #e0a030;
+
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 32px -12px rgba(0, 0, 0, 0.55);
+  --shadow-accent: 0 8px 30px -8px rgba(30, 158, 90, 0.5);
+}

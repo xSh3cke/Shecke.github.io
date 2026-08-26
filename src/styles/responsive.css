@@ -1,0 +1,83 @@
+/* Todos los breakpoints del sitio en un solo lugar — mantenerlos
+   juntos facilita razonar sobre cómo cambia el layout completo en
+   cada punto de quiebre, en vez de tener media queries dispersas
+   por cada archivo de componente. */
+
+/* ============================================================
+   RESPONSIVE — Tablets (≤1024px, e.g. iPad portrait)
+   ============================================================ */
+@media (max-width: 1024px) {
+  .nav__links { gap: 1.5rem; }
+  .hero__grid { grid-template-columns: 1fr; }
+  .hero__visual { order: -1; max-width: 480px; margin: 0 auto; }
+  .hero__copy { align-items: center; text-align: center; }
+  .hero__subtitle { max-width: 52ch; }
+  .hero__actions { justify-content: center; }
+  .hero__stats { justify-content: center; }
+  .grid--featured { grid-template-columns: repeat(2, 1fr); }
+  .grid--catalog { grid-template-columns: repeat(2, 1fr); }
+  .footer__top { grid-template-columns: 1fr; gap: 2.2rem; }
+  .footer__brand { text-align: left; }
+}
+
+/* ============================================================
+   RESPONSIVE — Small tablets / large phones (≤768px)
+   ============================================================ */
+@media (max-width: 768px) {
+  .nav__links { display: none; }
+  .menutoggle { display: flex; }
+  .mobilenav { display: flex; }
+  .iconbtn__label { display: none; }
+  .nav__cta { padding: 0.55rem 0.9rem; }
+
+  .terminal { transform: none; max-width: 100%; }
+  .terminal__body { min-height: 200px; font-size: 0.75rem; }
+
+  .section__head { flex-direction: column; align-items: flex-start; }
+  .searchbox { width: 100%; min-width: 0; }
+
+  .grid--featured { grid-template-columns: 1fr; }
+  .grid--catalog { grid-template-columns: repeat(2, 1fr); }
+
+  .trust { grid-template-columns: repeat(2, 1fr); }
+
+  .footer__cols { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ============================================================
+   RESPONSIVE — Phones (≤480px)
+   ============================================================ */
+@media (max-width: 480px) {
+  .hero { padding-top: 2.2rem; }
+  .hero__actions { flex-direction: column; width: 100%; }
+  .hero__actions .btn { width: 100%; }
+  .hero__stats { gap: 0.9rem; flex-wrap: wrap; justify-content: space-between; }
+  .stat__divider { display: none; }
+
+  .grid--catalog { grid-template-columns: 1fr; }
+  .trust { grid-template-columns: 1fr; }
+
+  .footer__cols { grid-template-columns: 1fr; gap: 1.6rem; }
+
+  .drawer { width: 100vw; }
+  .modal { width: calc(100vw - 1.5rem); padding: 1.4rem; }
+  .field-row { grid-template-columns: 1fr; }
+  .paymethods { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   RESPONSIVE — Large desktop (≥1600px): cap runaway scale
+   ============================================================ */
+@media (min-width: 1600px) {
+  .section, .hero, .footer__top, .trust { max-width: 1440px; }
+}
+
+/* ============================================================
+   Touch-device refinement: remove hover-only affordances that
+   feel sticky on iOS/Android, rely on active state instead.
+   ============================================================ */
+@media (hover: none) {
+  .card:hover { transform: none; }
+  .btn--primary:hover { transform: none; box-shadow: var(--shadow-accent); }
+  .nav__link::after { display: none; }
+}

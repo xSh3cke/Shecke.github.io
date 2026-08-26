@@ -1,0 +1,83 @@
+/* Botones: variantes base (.btn--primary/ghost/outline/text), tamaños,
+   y el glow-on-hover que consume GlowButton.jsx. */
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: var(--f-body);
+  font-weight: 600;
+  font-size: 0.88rem;
+  padding: 0.72rem 1.3rem;
+  border-radius: var(--radius-sm);
+  transition: transform 0.18s var(--ease), box-shadow 0.18s var(--ease), background 0.18s, border-color 0.18s;
+  white-space: nowrap;
+}
+.btn--primary {
+  background: linear-gradient(155deg, var(--c-accent-bright) 0%, var(--c-accent) 55%, var(--c-accent-deep) 100%);
+  color: #fff;
+  box-shadow: var(--shadow-accent);
+}
+.btn--primary:hover { transform: translateY(-1px); box-shadow: 0 12px 34px -8px rgba(196, 30, 58, 0.6); }
+.btn--primary:active { transform: translateY(0); }
+
+.btn--ghost {
+  background: transparent;
+  border: 1px solid var(--c-border);
+  color: var(--c-text);
+}
+.btn--ghost:hover { border-color: var(--c-text-faint); background: var(--c-surface); }
+
+.btn--outline {
+  background: transparent;
+  border: 1px solid var(--c-border);
+  color: var(--c-text-dim);
+}
+.btn--outline:hover { border-color: var(--c-accent); color: var(--c-text); }
+
+.btn--text { background: transparent; color: var(--c-text-dim); font-weight: 500; }
+.btn--text:hover { color: var(--c-text); }
+
+.btn--sm { padding: 0.55rem 1rem; font-size: 0.82rem; }
+.btn--lg { padding: 0.9rem 1.7rem; font-size: 0.95rem; }
+.btn--block { width: 100%; }
+
+/* ============================================================
+   GLOW BUTTON
+   Cursor-follow spotlight for primary CTAs. JS writes --glow-x/
+   --glow-y in mousemove; the radial-gradient pseudo-element only
+   becomes visible on :hover, so touch devices (no mousemove) are
+   unaffected and fall back to the plain .btn appearance.
+   ============================================================ */
+.glowbtn {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.glowbtn__shine {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s var(--ease);
+  background: radial-gradient(
+    160px circle at var(--glow-x, 50%) var(--glow-y, 50%),
+    rgba(255, 255, 255, 0.28),
+    transparent 70%
+  );
+}
+.glowbtn:hover .glowbtn__shine { opacity: 1; }
+.glowbtn__content {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+@media (hover: none) {
+  .glowbtn__shine { display: none; }
+}

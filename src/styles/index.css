@@ -1,0 +1,15 @@
+/* Punto de entrada único de estilos — importado una sola vez desde main.jsx.
+   El orden importa: tokens.css debe ir primero (define las variables que
+   todo lo demás consume), base.css segundo (reset antes que componentes). */
+
+@import './tokens.css';
+@import './base.css';
+@import './layout.css';
+@import './buttons.css';
+@import './hero.css';
+@import './sections.css';
+@import './products.css';
+@import './modals.css';
+@import './effects.css';
+@import './animations.css';
+@import './responsive.css';
